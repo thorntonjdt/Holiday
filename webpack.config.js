@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
+const ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 const clientConfig = {
   entry: './client.js',
@@ -25,7 +27,7 @@ const clientConfig = {
 };
 
 const serverConfig = {
-  entry: './server.js',
+  entry: './server/index.js',
   output: {
     path: `${__dirname}/build`,
     filename: 'server.js',
@@ -39,6 +41,12 @@ const serverConfig = {
       loader: 'babel-loader'
     }]
   },
+  plugins: [
+    new ManifestPlugin(),
+    new ReactLoadablePlugin({
+      filename: './build/react-loadable.json'
+    })
+  ],
   externals: [nodeExternals()]
 };
 
